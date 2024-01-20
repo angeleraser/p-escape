@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  position: relative;
+  background-color: lightblue;
+}
+
+.enemy {
+  width: 60px;
+  height: 60px;
+  background-image: url(./enemy.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: fixed;
+  transform-origin: center;
+  cursor: pointer;
+  transition-duration: 0s;
+}
+
+.hitbox {
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  transform: translate(-50%, -50%);
+}
