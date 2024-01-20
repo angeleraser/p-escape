@@ -1,5 +1,6 @@
 const area = document.getElementById("body");
 const hitbox = document.querySelector(".hitbox");
+const startBtn = document.getElementById("start-btn");
 
 class Enemy {
   constructor({ position, rotation }) {
@@ -76,51 +77,57 @@ function getHitboxPosition() {
   return { x: left, y: top };
 }
 
-const mousePosition = { x: 0, y: 0 };
+startBtn.addEventListener("click", function () {
+  this.style.display = "none";
 
-window.addEventListener("mousemove", function (event) {
-  const { x, y } = getMousePosition(event);
-  mousePosition.x = x;
-  mousePosition.y = y;
-  hitbox.style.top = `${y}px`;
-  hitbox.style.left = `${x}px`;
-});
+  const mousePosition = { x: 0, y: 0 };
 
-const enemies = [new Enemy({ position: { x: 0, y: 0 }, rotation: 90 })];
-let isCatched = false;
-let isCreatingEnemy = false;
-
-function isMouseCatched(enemy) {
-  const { x: enemyX, y: enemyY } = enemy.getPosition();
-  const { x: hitboxX, y: hitboxY } = getHitboxPosition();
-
-  const xAxis = Math.floor(Math.abs(enemyX - hitboxX));
-  const yAxis = Math.floor(Math.abs(enemyY - hitboxY));
-
-  return xAxis > 48 && xAxis <= 50 && yAxis > 48 && yAxis <= 50;
-}
-
-setInterval(function () {
-  const { x: mouseX, y: mouseY } = mousePosition;
-
-  enemies.forEach(function (enemy) {
-    enemy.setPosition({ x: mouseX, y: mouseY });
+  window.addEventListener("mousemove", function (event) {
+    const { x, y } = getMousePosition(event);
+    mousePosition.x = x;
+    mousePosition.y = y;
+    hitbox.style.top = `${y}px`;
+    hitbox.style.left = `${x}px`;
   });
 
-  if (enemies.length === 10) return;
+  const enemies = [new Enemy({ rotation: 40, position: getRandomPosition() })];
 
-  if (isMouseCatched(enemies[enemies.length - 1]) && mouseX > 0 && mouseY > 0) {
-    isCreatingEnemy = true;
+  function isMouseCatched(enemy) {
+    const { x: enemyX, y: enemyY } = enemy.getPosition();
+    const { x: hitboxX, y: hitboxY } = getHitboxPosition();
 
-    enemies.push(
-      new Enemy({
-        position: getRandomPosition(),
-        rotation: getRandomRotation(),
-      })
-    );
+    const xAxis = Math.floor(Math.abs(enemyX - hitboxX));
+    const yAxis = Math.floor(Math.abs(enemyY - hitboxY));
 
-    setTimeout(() => {
-      isCreatingEnemy = false;
-    }, 1000);
+    return xAxis > 48 && xAxis <= 50 && yAxis > 48 && yAxis <= 50;
   }
-}, 0.25);
+
+  setInterval(function () {
+    const { x: mouseX, y: mouseY } = mousePosition;
+
+    enemies.forEach(function (enemy) {
+      enemy.setPosition({ x: mouseX, y: mouseY });
+    });
+
+    if (enemies.length === 10) return;
+
+    if (
+      isMouseCatched(enemies[enemies.length - 1]) &&
+      mouseX > 0 &&
+      mouseY > 0
+    ) {
+      isCreatingEnemy = true;
+
+      enemies.push(
+        new Enemy({
+          position: getRandomPosition(),
+          rotation: getRandomRotation(),
+        })
+      );
+
+      setTimeout(() => {
+        isCreatingEnemy = false;
+      }, 1000);
+    }
+  }, 0.25);
+});
