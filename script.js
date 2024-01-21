@@ -23,6 +23,10 @@ class Enemy {
     div.style.left = `${position.x}px`;
     div.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
 
+    div.addEventListener("click", () => {
+      this.shot();
+    });
+
     return div;
   }
 
@@ -51,6 +55,17 @@ class Enemy {
 
   insert() {
     area.appendChild(this.rootElement);
+  }
+
+  shot() {
+    const line = document.createElement("div");
+    line.classList.add("line");
+
+    this.rootElement.appendChild(line);
+
+    setTimeout(() => {
+      this.rootElement.removeChild(line)
+    }, 600);
   }
 }
 
@@ -109,7 +124,7 @@ startBtn.addEventListener("click", function () {
       enemy.setPosition({ x: mouseX, y: mouseY });
     });
 
-    if (enemies.length === 10) return;
+    if (enemies.length === 1) return;
 
     if (
       isMouseCatched(enemies[enemies.length - 1]) &&
