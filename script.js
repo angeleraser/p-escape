@@ -124,7 +124,7 @@ startBtn.addEventListener("click", function () {
       enemy.setPosition({ x: mouseX, y: mouseY });
     });
 
-    if (enemies.length === 1) return;
+    if (enemies.length === 10) return;
 
     if (
       isMouseCatched(enemies[enemies.length - 1]) &&
